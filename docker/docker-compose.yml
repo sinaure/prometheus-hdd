@@ -1,0 +1,57 @@
+version: '2.1'
+services:
+  db:
+    container_name: prometheus_postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    image: timescale/pg_prometheus:latest
+    command: -c synchronous_commit=OFF
+    ports:
+    - 5432:5432/tcp
+    networks:
+      - default
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+    - 9090:9090/tcp
+    volumes:
+    - ./prometheus/config.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - default
+  prometheus-gateway:
+    image: easyglobalmarket/mqtt-gateway-prometheus
+    container_name: prometheus_gateway
+    ports:
+    - 9337:9337
+    environment:
+      - IP=192.168.99.100
+      - PORT=1883
+      - USERNAME=hub-iot
+      - PASSWORD=hub-iot
+    networks:
+      - default  
+  prometheus_postgresql_adapter:
+    container_name: prometheus_pg_adapter
+    depends_on:
+     - db
+    environment:
+      TS_PROM_LOG_LEVEL: debug
+      TS_PROM_PG_DB_CONNECT_RETRIES: 10
+      TS_PROM_PG_HOST: prometheus_postgres
+      TS_PROM_PG_PASSWORD: postgres
+      TS_PROM_PG_SCHEMA: postgres
+      TS_PROM_WEB_TELEMETRY_PATH: /metrics-text
+    image: timescale/prometheus-postgresql-adapter:latest
+    ports:
+    - 9201:9201/tcp
+    command: "-pg.host=prometheus_postgres -pg.prometheus-log-samples -pg.password=postgres"
+    networks:
+      - default
+
+networks:
+  default:
+    external:
+      name: egm
+    
