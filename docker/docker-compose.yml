@@ -20,16 +20,22 @@ services:
     - ./prometheus/config.yml:/etc/prometheus/prometheus.yml:ro
     networks:
       - default
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    ports:
+      - 1883:1883
+      - 9001:9001 
+    networks:
+      - default    
   prometheus-gateway:
     image: easyglobalmarket/mqtt-gateway-prometheus
     container_name: prometheus_gateway
     ports:
     - 9337:9337
     environment:
-      - IP=192.168.99.100
+      - IP=mosquitto
       - PORT=1883
-      - USERNAME=hub-iot
-      - PASSWORD=hub-iot
     networks:
       - default  
   prometheus_postgresql_adapter:
