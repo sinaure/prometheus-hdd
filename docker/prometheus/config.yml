@@ -36,5 +36,5 @@ scrape_configs:
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
     static_configs:
-      - targets: ['prometheus_gateway:9337']    
+      - targets: ['mqtt_exporter:9466']    
    
