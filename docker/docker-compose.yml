@@ -20,9 +20,19 @@ services:
     - ./prometheus/config.yml:/etc/prometheus/prometheus.yml:ro
     networks:
       - default
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    ports:
+    - 1883:1883
+    - 9001:9001
+    networks:
+      - default       
   mqtt-exporter:
     image: easyglobalmarket/mqtt-exporter
     container_name: mqtt_exporter
+    depends_on:
+     - mosquitto
     ports:
     - 9466:9466
     environment:
@@ -37,7 +47,7 @@ services:
     environment:
       TS_PROM_LOG_LEVEL: debug
       TS_PROM_PG_DB_CONNECT_RETRIES: 10
-      TS_PROM_PG_HOST: prometheus_postgres
+      TS_PROM_PG_HOST: 191.168.99.100
       TS_PROM_PG_PASSWORD: postgres
       TS_PROM_PG_SCHEMA: postgres
       TS_PROM_WEB_TELEMETRY_PATH: /metrics-text
