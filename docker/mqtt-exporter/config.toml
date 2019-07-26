@@ -15,7 +15,7 @@ password  = "hub-iot"
 # List some keys we should subscribe to. Use '#' to subscribe to *everything*.
 # We will ignore any messages that can't be directly parsed as floats.
 subscribe = [
-    'indpilot/#'
+    'egm/#'
 ]
 
 # Expire metrics after 5 Minutes. Can be overridden in the [[topic]] sections.
@@ -38,15 +38,15 @@ expire = 300
 # the topic name will be split at / and the last part will be used for
 # the metric name.
 #
-match  = 'indpilot/(?P<virtual_machine>\w+)/(?P<component>\w+)/(?P<__metric__>\w+)'
+match  = 'egm/(?P<user>\w+)/(?P<device>\w+)/(?P<__metric__>\w+)'
 #
 # This regex will convert a topic such as this:
 #
-#    indpilot/virtual_machine/component/temperature
+#    egm/virtual_machine/component/temperature
 #
 # into a Prometheus metric such as this one:
 #
-#    temperature{mqtt_topic="indpilot/virtual_machine/component/temperature",virtual_machine="WM1",component="WM1"}
+#    temperature{mqtt_topic="egm/user/device/temperature",user="bioceanor/drompy...",device="uri:hgd543671"}
 #
 # so then you can use the sensor_name as a filter in your PromQL queries.
 
@@ -61,7 +61,7 @@ expire = 900
 
 
 [[topic]]
-match  = 'indpilot/unwantedVM/.*'
-# If you want to ignore certain topics that are unfortunately included
+match  = 'egm/user/.*'
+# If you want to ban/ignore certain topics
 # in your subscriptions, you can use:
 ignore = true
