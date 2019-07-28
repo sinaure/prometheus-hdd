@@ -13,7 +13,6 @@ services:
     container_name: prometheus
     depends_on:
      - mqttexporter
-     - prometheus_kafka_adapter
     ports:
     - 9090:9090/tcp
     volumes:
@@ -21,13 +20,6 @@ services:
     networks:
       - default
       
-  prometheus_kafka_adapter:    
-    image: telefonica/prometheus-kafka-adapter:1.2.0
-    container_name: prometheus_kafka_adapter
-    environment:
-      KAFKA_BROKER_LIST: 192.168.99.100:9092
-      KAFKA_TOPIC: senml      
-  
   mqttexporter:
     image: paderborn/mqttexporter
     container_name: mqttexporter
@@ -41,6 +33,12 @@ services:
       - MQTT_TOPIC=senml/diatomic/#
     networks:
       - default
+  prometheus_kafka_adapter:    
+    image: telefonica/prometheus-kafka-adapter:1.2.0
+    container_name: prometheus_kafka_adapter
+    environment:
+      KAFKA_BROKER_LIST: kafka:9092
+      KAFKA_TOPIC: senml    
   #prometheus_postgresql_adapter:
   #  container_name: prometheus_pg_adapter
   #  depends_on:

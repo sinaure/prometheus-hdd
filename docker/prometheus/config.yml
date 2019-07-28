@@ -36,9 +36,3 @@ scrape_configs:
     static_configs:
       - targets: ['mqttexporter:9089'] 
   
-  - job_name: 'kafka-gateway'
-
-    # metrics_path defaults to '/metrics'
-    # scheme defaults to 'http'.
-    static_configs:
-      - targets: ['191.168.99.100:9308'] 
