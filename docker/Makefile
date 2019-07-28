@@ -9,12 +9,11 @@ run:
 	#postgres have to be started before 
 	docker run --rm -d --name prometheus_postgres -e "POSTGRES_PASSWORD=postgres" -e "POSTGRES_USER=postgres" -p 5432:5432  --net=egm  timescale/pg_prometheus:latest
 	sleep 60
-	#./init.sh
+	docker-compose -d -f docker-compose-cloud.yml up
 	docker-compose up 
 	#docker-compose up -d
 stop:
 	docker stop prometheus_postgres || true
 	docker rm prometheus_postgres || true
 	docker-compose down
-	
 	

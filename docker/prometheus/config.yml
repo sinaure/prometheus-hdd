@@ -16,6 +16,7 @@ rule_files:
 
 remote_write:
     - url: "http://prometheus_postgresql_adapter:9201/write"
+    - url: "http://prometheus_kafka_adapter:8080/receive"
 remote_read:
     - url: "http://prometheus_postgresql_adapter:9201/read"
 
@@ -36,5 +37,11 @@ scrape_configs:
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
     static_configs:
-      - targets: ['mqttexporter:9089']    
-   
+      - targets: ['mqttexporter:9089'] 
+  
+  - job_name: 'kafka-gateway'
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+    static_configs:
+      - targets: ['191.168.99.100:9308'] 

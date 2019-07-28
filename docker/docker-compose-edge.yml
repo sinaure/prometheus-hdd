@@ -1,47 +1,25 @@
 version: '2.1'
 services:
-  #db:
-  #  container_name: prometheus_postgres
-  #  environment:
-  #    POSTGRES_PASSWORD: postgres
-  #    POSTGRES_USER: postgres
-  #  image: timescale/pg_prometheus:latest
-  #  command: -c synchronous_commit=OFF
-  #  ports:
-  #  - 5432:5432/tcp
-  #  networks:
-  #    - default
+  
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     depends_on:
      - mqttexporter
+     - prometheus_kafka_adapter
     ports:
     - 9090:9090/tcp
     volumes:
     - ./prometheus/config.yml:/etc/prometheus/prometheus.yml:ro
     networks:
       - default
-  mosquitto:
-    image: eclipse-mosquitto
-    container_name: mosquitto
-    ports:
-    - 1883:1883
-    - 9001:9001
-    networks:
-      - default 
-  mqttexporter:
-    image: paderborn/mqttexporter
-    container_name: mqttexporter
-    depends_on:
-       - mosquitto
-    ports:
-    - 9089:9089
+  prometheus_kafka_adapter:    
+    image: telefonica/prometheus-kafka-adapter:1.2.0
+    container_name: prometheus_kafka_adapter
     environment:
-      - MQTT_BROKER_HOST=mosquitto
-      - MQTT_BROKER_PORT=1883
-    networks:
-      - default
+      KAFKA_BROKER_LIST: 192.168.99.100:9092
+      KAFKA_TOPIC: senml      
+  
   prometheus_postgresql_adapter:
     container_name: prometheus_pg_adapter
     depends_on:
@@ -59,7 +37,6 @@ services:
     command: "-pg.host=prometheus_postgres -pg.prometheus-log-samples -pg.password=postgres"
     networks:
       - default
-
 networks:
   default:
     external:
