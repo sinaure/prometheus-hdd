@@ -56,13 +56,13 @@ class MqttExporter(object):
         # ensure singelton instance of Metric objects
         if metric not in self._metric_registry:
             self._metric_registry[metric] = Gauge(
-                metric, "Metric {}".format(metric), ["machine", "message"])
+                metric, "Metric {}".format(metric), ["user", "message"])
         # update metric
         if is_numeric:  # directly set the numeric value
-            self._metric_registry[metric].labels(machine=label, message="numeric").set(value)
+            self._metric_registry[metric].labels(user=label, message="numeric").set(value)
             print("MQE:\tPrometheus set numeric metric '{}' to {}".format(metric, value))
         else:  # use the mesaage as label and increment message counter
-            self._metric_registry[metric].labels(machine=label, message=value).inc()
+            self._metric_registry[metric].labels(user=label, message=value).inc()
             print("MQE:\tPrometheus inc. labeld metric '{}' message={}".format(metric, value))
 
     def _topic_to_metric_label(self, topic):

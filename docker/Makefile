@@ -7,10 +7,10 @@ run:
 	#docker run -d --name hdd-rabbitmq  -p 15672:15672 -p 5672:5672 -p 1883:1883 --net=egm  egm/rabbitmq
 	#docker exec hdd-rabbitmq /docker-rabbitmq/init.sh
 	#postgres have to be started before 
-	docker run --rm -d --name prometheus_postgres -e "POSTGRES_PASSWORD=postgres" -e "POSTGRES_USER=postgres" -p 5432:5432  --net=egm  timescale/pg_prometheus:latest
-	sleep 60
-	docker-compose -d -f docker-compose-cloud.yml up
-	docker-compose up 
+	#docker run --rm -d --name prometheus_postgres -e "POSTGRES_PASSWORD=postgres" -e "POSTGRES_USER=postgres" -p 5432:5432  --net=egm  timescale/pg_prometheus:latest
+	#sleep 60
+	docker-compose  -f docker-compose-cloud.yml  up -d
+	docker-compose up -d
 	#docker-compose up -d
 stop:
 	docker stop prometheus_postgres || true

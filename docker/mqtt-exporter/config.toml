@@ -7,8 +7,8 @@ port   = 9466
 # Configure your MQTT broker's address and credentials here.
 [mqtt]
 client_id = "mqtt_pushgw-%(hostname)s"
-broker    = "192.168.99.100"
-port      = 1883
+#broker    = "192.168.99.100"
+#port      = 1883
 username  = "hub-iot"
 password  = "hub-iot"
 
@@ -38,7 +38,7 @@ expire = 300
 # the topic name will be split at / and the last part will be used for
 # the metric name.
 #
-match  = 'senml/(?P<user>\w+)/(?P<device>\w+)/(?P<__metric__>\w+)'
+match  = 'senml/(?P<user>\w+)/(?P<__metric__>\w+)'
 #
 # This regex will convert a topic such as this:
 #
@@ -61,7 +61,7 @@ expire = 900
 
 
 [[topic]]
-match  = 'senml/diatomic/.*'
+match  = 'senml/unwanted/.*'
 # If you want to ban/ignore certain topics
 # in your subscriptions, you can use:
 ignore = true

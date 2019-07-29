@@ -7,6 +7,7 @@ import pytoml
 import logging
 import socket
 import time
+import os
 
 import paho.mqtt.client as mqttClient
 
@@ -148,7 +149,7 @@ def main():
     client.on_connect = on_connect
 
 
-    client.connect(config["mqtt"]["broker"], port=config["mqtt"]["port"])
+    client.connect(os.getenv("MQTT_BROKER_HOST", "127.0.0.1"), int(os.getenv("MQTT_BROKER_PORT", "1883")))
 
     client.loop_start()
 

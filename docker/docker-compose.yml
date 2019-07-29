@@ -21,16 +21,17 @@ services:
       - default
       
   mqttexporter:
-    image: paderborn/mqttexporter
+    image: easyglobalmarket/mqtt-exporter
     container_name: mqttexporter
     depends_on:
        - mosquitto
     ports:
-    - 9089:9089
+    - 9466:9466
     environment:
       - MQTT_BROKER_HOST=mosquitto
       - MQTT_BROKER_PORT=1883
-      - MQTT_TOPIC=senml/diatomic/#
+      - MQTT_TOPIC=senml/#
+      - PROMETHEUS_EXPORTER_PORT=9466
     networks:
       - default
   prometheus_kafka_adapter:    

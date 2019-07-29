@@ -34,5 +34,5 @@ scrape_configs:
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
     static_configs:
-      - targets: ['mqttexporter:9089'] 
+      - targets: ['mqttexporter:9466'] 
   
